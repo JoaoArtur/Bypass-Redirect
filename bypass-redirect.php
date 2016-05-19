@@ -1,66 +1,57 @@
 <?php 
-	if (count($argv) == 1) {
-$text=' _   __ _____  _   _  _____   _   _   ___   _____  _   __ _____  _   _  _____ 
-| | / /|  ___|| \ | ||_   _| | | | | / _ \ /  __ \| | / /|_   _|| \ | ||  __ \
-| |/ / | |__  |  \| |  | |   | |_| |/ /_\ \| /  \/| |/ /   | |  |  \| || |  \/
-|    \ |  __| | . ` |  | |   |  _  ||  _  || |    |    \   | |  | . ` || | __ 
-| |\  \| |___ | |\  | _| |_  | | | || | | || \__/\| |\  \ _| |_ | |\  || |_\ \
-\_| \_/\____/ \_| \_/ \___/  \_| |_/\_| |_/ \____/\_| \_/ \___/ \_| \_/ \____/'."\nUso: php ".$_SERVER['SCRIPT_NAME']." site tipo\n\nTipos: php,asp,aspx,jsf,html";
-		echo $text;
+
+// vai falar q kibei?
+
+function bypassredirect($site,$lista,$tipo) {
+	foreach ($lista as $caminho) {
+		$pagina = $caminho.".".$tipo;
+		$link = str_replace(array("//","http:/","https:/"),array("/","http://","https://"),$site."/".$pagina);
+		$cabecalho = get_headers($link);
+		if (strstr($cabecalho[0],"302")) {
+			echo "[+] ".$link."\n";
+		}
+	}
+}
+
+if (count($argv) == 1) {
+	echo "Bypass Redirect file finder\nBy Keni Hacking\n\nUso: php ".$_SERVER['SCRIPT_NAME']." site tipo\n\nTipos: php,asp,aspx,jsf,html\n";
+} else {
+	if (count($argv) == 3) {
+		echo "Bypass Redirect file finder\nBy Keni Hacking\n\n";
+		$filename = $argv[0];
+		$site = $argv[1];
+		$tipo = $argv[2];
+
+		$arquivos = array("index","login","dashboard","painel","principal","panel","admin","home","main","noticias","dash","start","usuario","user","users","news","events","licitacoes","config","logado","online","local","adm");
+		switch ($tipo) {
+			case 'php':
+				echo "Site: ".$site."\nTipo: php\n";
+				bypassredirect($site,$arquivos,"php");
+				break;
+			case 'asp':
+				echo "Site: ".$site."\nTipo: asp\n";
+				bypassredirect($site,$arquivos,"asp");
+				break;
+			case 'aspx':
+				echo "Site: ".$site."\nTipo: aspx\n";
+				bypassredirect($site,$arquivos,"aspx");
+				break;
+			case 'jsf':
+				echo "Site: ".$site."\nTipo: jsf\n";
+				bypassredirect($site,$arquivos,"jsf");
+				break;
+			case 'html':
+				echo "Site: ".$site."\nTipo: html\n";
+				bypassredirect($site,$arquivos,"html");
+				break;
+			
+			default:
+				echo "Tipo desconhecido.";
+				break;
+		}
 	} else {
-		if (count($argv) == 3) {
-$text=' _   __ _____  _   _  _____   _   _   ___   _____  _   __ _____  _   _  _____ 
-| | / /|  ___|| \ | ||_   _| | | | | / _ \ /  __ \| | / /|_   _|| \ | ||  __ \
-| |/ / | |__  |  \| |  | |   | |_| |/ /_\ \| /  \/| |/ /   | |  |  \| || |  \/
-|    \ |  __| | . ` |  | |   |  _  ||  _  || |    |    \   | |  | . ` || | __ 
-| |\  \| |___ | |\  | _| |_  | | | || | | || \__/\| |\  \ _| |_ | |\  || |_\ \
-\_| \_/\____/ \_| \_/ \___/  \_| |_/\_| |_/ \____/\_| \_/ \___/ \_| \_/ \____/'."\n";
-
-function bypassredirect($site,$paginas,$tipo) {
-	foreach ($paginas as $pagina) {
-		$h=get_headers($site."/".$pagina.".".$tipo);
-		if ($h[0] == "HTTP/1.1 302 Found" or $h[0] == "HTTP/1.1 200 OK") {
-			$rs = str_replace(array("//","http:/"),array("/","http://"),$site."/".$pagina.".".$tipo);
-			echo "[+] ".$rs."\n";
-		}
+		echo "Bypass Redirect file finder\nBy Keni Hacking\n\nUso: php ".$_SERVER['SCRIPT_NAME']." site tipo\n\nTipos: php,asp,aspx,jsf,html\n";
 	}
 }
 
-$paginas=array("admin","dashboard","dash","painel","index","home","main","noticias","news","panel","adm","trocar-senha","usuario","usuarios","licitacoes","principal","princ","admin_index","default","inicio","logado","online","upload","album","administrator","adm","kpanel","cpanel","gerenciador","manager","registro","local");
-switch ($argv[2]) {
-	case 'php':
-		print $text."Site: $argv[1]\nTipo: $argv[2]\n";
-		bypassredirect($argv[1],$paginas,"php");
-		break;
-	case 'asp':
-		print $text."Site: $argv[1]\nTipo: $argv[2]\n";
-		bypassredirect($argv[1],$paginas,"asp");
-		break;
-	case 'aspx':
-		print $text."Site: $argv[1]\nTipo: $argv[2]\n";
-		bypassredirect($argv[1],$paginas,"aspx");
-		break;
-	case 'jsf':
-		print $text."Site: $argv[1]\nTipo: $argv[2]\n";
-		bypassredirect($argv[1],$paginas,"jsf");
-		break;
-	case 'html':
-		print $text."Site: $argv[1]\nTipo: $argv[2]\n";
-		bypassredirect($argv[1],$paginas,"html");
-		break;
-	
-	default:
-		print $text."Site: $argv[1]\nTipo: o tipo definido invalido.";
-		break;
-}
-		} else {
-$text=' _   __ _____  _   _  _____   _   _   ___   _____  _   __ _____  _   _  _____ 
-| | / /|  ___|| \ | ||_   _| | | | | / _ \ /  __ \| | / /|_   _|| \ | ||  __ \
-| |/ / | |__  |  \| |  | |   | |_| |/ /_\ \| /  \/| |/ /   | |  |  \| || |  \/
-|    \ |  __| | . ` |  | |   |  _  ||  _  || |    |    \   | |  | . ` || | __ 
-| |\  \| |___ | |\  | _| |_  | | | || | | || \__/\| |\  \ _| |_ | |\  || |_\ \
-\_| \_/\____/ \_| \_/ \___/  \_| |_/\_| |_/ \____/\_| \_/ \___/ \_| \_/ \____/'."\nArgumentos faltando.";
-print $text;
-		}
-	}
 ?>
